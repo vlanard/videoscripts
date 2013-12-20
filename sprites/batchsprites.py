@@ -6,7 +6,7 @@ import os
 
 # Batch process a text file containing list of videos to make sprites for, and a destination directory for just the sprites/vtt files
 
-OUTPUT_FOLDER = "/Users/vlanard/myproject_git/ubuntu/proj/prototype/static/inc/th"
+OUTPUT_FOLDER = "/Users/vlanard/gigabody_git/ubuntu/gigab/prototype/static/inc/th"
 
 if not len(sys.argv) > 1 :
     sys.exit("Please pass the full path to file containing the video list for which to create thumbnails.")
