@@ -14,20 +14,22 @@ and create a Web VTT file that maps the sprite images to the video segments.
 
 Required dependencies (expected in PATH):
 * ffmpeg [download here](http://www.ffmpeg.org/download.html)
-* imagemagick [download here](http://www.imagemagick.org/script/index.php) or [here](http://www.imagemagick.org/script/index.php) or Mac: <pre>sudo port install ImageMagick</pre>
+* imagemagick [download here](http://www.imagemagick.org/script/index.php) or [here](http://www.imagemagick.org/script/index.php) or on Mac, use Macports: <pre>sudo port install ImageMagick</pre>
 
 Optional dependencies that can improve png compression:
 * sips (part of MAC OSX)
-* optipng [download here](http://optipng.sourceforge.net/), [command line reference manual](http://optipng.sourceforge.net/optipng-0.7.4.man.pdf)
+* optipng [download here](http://optipng.sourceforge.net/), and see [command line reference manual](http://optipng.sourceforge.net/optipng-0.7.4.man.pdf)
 
 Reference Articles:
-# http://www.longtailvideo.com/support/jw-player/31804/basic-tooltip-thumbs
-# http://www.longtailvideo.com/support/jw-player/31778/adding-tooltip-thumbnails/
+* http://www.longtailvideo.com/support/jw-player/31804/basic-tooltip-thumbs
+* http://www.longtailvideo.com/support/jw-player/31778/adding-tooltip-thumbnails/
 
 Sample Usage:
+
     python makesprites.py /path/to/myvideofile.mp4
 
 You may want to customize the the following variables in makesprites.py:
+
     USE_SIPS = True         # True if using MacOSX (creates slightly smaller sprites), else set to False to use ImageMagick resizing
     USE_OPTIPNG = True      # True to use optipng to further compress PNG files, False to skip or if not installed
     THUMB_RATE_SECONDS=45   # every Nth second take a snapshot of the video (tested with 30,45,60)
@@ -84,13 +86,15 @@ Sample wrapper script for batch processing a bunch of videos, to make sprites & 
 where they will be web-accessible by JWPlayer track URL.  Note - this URL must use same domain as your webserver (per JWPlayer).
 
 Expects a file name as input. File should be simple text file containing a list of video files (with fully qualified paths or relative paths from script directory).
-It generates thumbnails/sprites for each video, then copies the sprite & vtt file to a destination folder defined in the <pre>OUTPUT_FOLDER</pre> variable.
+It generates thumbnails/sprites for each video, then copies the sprite & vtt file to a destination folder defined in the `OUTPUT_FOLDER` variable.
 
 Usage:
+
     python batchsprites.py filelist.txt
 
 Sample filelist.txt contents:
-    /Users/vlanard/biz/video/video1_circ5.mp4
+
+    /Users/vlanard/valbiz/video/video1_circ5.mp4
     ../../archive/an/video1_circ1n2_wc_1500.m4v
     ../../archive/an/video1_circ1n4_wc_1500.m4v
     ../../archive/an/video1_circ2n3_wc_1500.m4v
