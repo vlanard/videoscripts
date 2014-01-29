@@ -16,9 +16,8 @@ Required dependencies (expected in PATH):
 * ffmpeg [download here](http://www.ffmpeg.org/download.html)
 * imagemagick [download here](http://www.imagemagick.org/script/index.php) or [here](http://www.imagemagick.org/script/index.php) or on Mac, use Macports: <pre>sudo port install ImageMagick</pre>
 
-Optional dependencies that can improve png compression:
+Optional dependencies for better image compression:
 * sips (part of MAC OSX)
-* optipng [download here](http://optipng.sourceforge.net/), and see [command line reference manual](http://optipng.sourceforge.net/optipng-0.7.4.man.pdf)
 
 Reference Articles:
 * http://www.longtailvideo.com/support/jw-player/31804/basic-tooltip-thumbs
@@ -31,7 +30,6 @@ Sample Usage:
 You may want to customize the the following variables in makesprites.py:
 
     USE_SIPS = True         # True if using MacOSX (creates slightly smaller sprites), else set to False to use ImageMagick resizing
-    USE_OPTIPNG = True      # True to use optipng to further compress PNG files, False to skip or if not installed
     THUMB_RATE_SECONDS=45   # every Nth second take a snapshot of the video (tested with 30,45,60)
     THUMB_WIDTH=100         # 100-150 is width recommended by JWPlayer, smaller size = smaller sprite for user to download
 
@@ -60,30 +58,38 @@ And a sample of a generated WebVTT file.
 <pre>
 WEBVTT
 
-00:00:00.000 --> 00:00:35.000
-myvideofile_sprite.png#xywh=0,0,100,55
+Img 1
+00:00:22.000 --> 00:01:07.000
+myvideofile_sprite.jpg#xywh=0,0,100,56
 
-00:00:35.000 --> 00:01:20.000
-myvideofile_sprite.png#xywh=100,0,100,55
+Img 2
+00:01:07.000 --> 00:01:52.000
+myvideofile_sprite.jpg#xywh=100,0,100,56
 
-00:01:20.000 --> 00:02:05.000
-myvideofile_sprite.png#xywh=200,0,100,55
+Img 3
+00:01:52.000 --> 00:02:37.000
+myvideofile_sprite.jpg#xywh=200,0,100,56
 
-00:02:05.000 --> 00:02:50.000
-myvideofile_sprite.png#xywh=300,0,100,55
+Img 4
+00:02:37.000 --> 00:03:22.000
+myvideofile_sprite.jpg#xywh=300,0,100,56
 
-00:02:50.000 --> 00:03:35.000
-myvideofile_sprite.png#xywh=0,55,100,55
+Img 5
+00:03:22.000 --> 00:04:07.000
+myvideofile_sprite.jpg#xywh=400,0,100,56
 
-00:03:35.000 --> 00:04:20.000
-myvideofile_sprite.png#xywh=100,55,100,55
+Img 6
+00:04:07.000 --> 00:04:52.000
+myvideofile_sprite.jpg#xywh=500,0,100,56
 </pre>
 
     
 batchsprites.py
 --------------
 Sample wrapper script for batch processing a bunch of videos, to make sprites & VTT files for each one, then copy them to a target folder,
-where they will be web-accessible by JWPlayer track URL.  Note - this URL must use same domain as your webserver (per JWPlayer).
+where they will be web-accessible by JWPlayer track URL.  Note - this URL must use same domain as your webserver (per JWPlayer). 
+(In development, you can modify your /etc/hosts file to point localhost.yourdomain.com to 127.0.0.1 to see sprites in action,
+assuming your local web server is configured to serve static files from this directory.)
 
 Expects a file name as input. File should be simple text file containing a list of video files (with fully qualified paths or relative paths from script directory).
 It generates thumbnails/sprites for each video, then copies the sprite & vtt file to a destination folder defined in the `OUTPUT_FOLDER` variable.
@@ -91,10 +97,11 @@ It generates thumbnails/sprites for each video, then copies the sprite & vtt fil
 Usage:
 
     python batchsprites.py filelist.txt
+    python batchsprites.py filelist.txt 20  #override default THUMB_RATE_SECONDS to take snapshot every 20 seconds
 
 Sample filelist.txt contents:
 
-    /Users/vlanard/valbiz/video/video1_circ5.mp4
+    /Users/vlanard/biz/video/video1_circ5.mp4
     ../../archive/an/video1_circ1n2_wc_1500.m4v
     ../../archive/an/video1_circ1n4_wc_1500.m4v
     ../../archive/an/video1_circ2n3_wc_1500.m4v

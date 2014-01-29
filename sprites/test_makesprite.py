@@ -38,7 +38,15 @@ class MyTestCase(unittest.TestCase):
         seventymin = 60*70
         self.assertEqual("01:10:00.000", mks.get_time_str(seventymin))
         seventyminten = 60*70 +10
-        self.assertEqual("01:10:10.000", mks.get_time_str(seventyminten))
+
+        self.assertEqual("01:10:00.000", mks.get_time_str(seventyminten,adjust=-10))
+        self.assertEqual("00:00:00.000", mks.get_time_str(0,adjust=-10))
+        self.assertEqual("00:00:00.000", mks.get_time_str(5,adjust=-10))
+        self.assertEqual("01:10:10.000", mks.get_time_str(seventyminten,adjust=0))
+        self.assertEqual("01:10:20.000", mks.get_time_str(seventyminten,adjust=10))
+        self.assertEqual("00:00:10.000", mks.get_time_str(0,adjust=10))
+        self.assertEqual("00:00:15.000", mks.get_time_str(5,adjust=10))
+
 
 if __name__ == '__main__':
     unittest.main()
