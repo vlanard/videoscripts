@@ -22,7 +22,6 @@ from dateutil import relativedelta
 ##################################
 
 #TODO determine optimal number of images/segment distance based on length of video? (so longer videos don't have huge sprites)
-#todo set up for optional preview image creation at same time, not ideal to combine because requires a much more frequent snapshot interval
 
 USE_SIPS = True #True to use sips if using MacOSX (creates slightly smaller sprites), else set to False to use ImageMagick
 THUMB_RATE_SECONDS=45 # every Nth second take a snapshot
