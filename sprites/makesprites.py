@@ -6,6 +6,7 @@ import os
 import datetime
 import math
 import glob
+import pipes
 from dateutil import relativedelta
 ##################################
 # Generate tooltip thumbnail images & corresponding WebVTT file for a video (e.g MP4).
@@ -101,7 +102,7 @@ def takesnaps(videofile,newoutdir,thumbRate=None):
     if not thumbRate:
         thumbRate = THUMB_RATE_SECONDS
     rate = "1/%d" % thumbRate # 1/60=1 per minute, 1/120=1 every 2 minutes
-    cmd = "ffmpeg -i %s -f image2 -bt 20M -vf fps=%s -aspect 16:9 %s/tv%%03d.jpg" % (videofile,rate,newoutdir)
+    cmd = "ffmpeg -i %s -f image2 -bt 20M -vf fps=%s -aspect 16:9 %s/tv%%03d.jpg" % (pipes.quote(videofile), rate, pipes.quote(newoutdir))
     doCmd (cmd)
     if SKIP_FIRST:
         #remove the first image
@@ -121,10 +122,10 @@ def resize(files):
         subprocess does not treat * as wildcard like shell does"""
     if USE_SIPS:
         # HERE IS MAC SPECIFIC PROGRAM THAT YIELDS SLIGHTLY SMALLER JPGs
-        doCmd("sips --resampleWidth %d %s" % (THUMB_WIDTH," ".join(files)))
+        doCmd("sips --resampleWidth %d %s" % (THUMB_WIDTH," ".join(map(pipes.quote, files))))
     else:
         # THIS COMMAND WORKS FINE TOO AND COMES WITH IMAGEMAGICK, IF NOT USING A MAC
-        doCmd("mogrify -geometry %dx %s" % (THUMB_WIDTH," ".join(files)))
+        doCmd("mogrify -geometry %dx %s" % (THUMB_WIDTH," ".join(map(pipes.quote, files))))
 
 def get_geometry(file):
     """execute command to give geometry HxW+X+Y of each file matching command
@@ -134,7 +135,7 @@ def get_geometry(file):
         100x66+0+0 - _tv001.jpg
         100x2772+0+0 - sprite2.jpg
         4200x66+0+0 - sprite2h.jpg"""
-    geom = doCmd("""identify -format "%%g - %%f\n" %s""" % file)
+    geom = doCmd("""identify -format "%%g - %%f\n" %s""" % pipes.quote(file))
     parts = geom.split("-",1)
     return parts[0].strip() #return just the geometry prefix of the line, sans extra whitespace
 
@@ -211,7 +212,7 @@ def makesprite(outdir,spritefile,coords,gridsize):
            NOT USING: convert tv*.jpg +append sprite.jpg     #SINGLE HORIZONTAL LINE of images
      base the sprite size on the number of thumbs we need to make into a grid."""
     grid = "%dx%d" % (gridsize,gridsize)
-    cmd = "montage %s/tv*.jpg -tile %s -geometry %s %s" % (outdir,grid,coords,spritefile)#if video had more than 144 thumbs, would need to be bigger grid, making it big to cover all our case
+    cmd = "montage %s/tv*.jpg -tile %s -geometry %s %s" % (pipes.quote(outdir), grid, coords, pipes.quote(spritefile))#if video had more than 144 thumbs, would need to be bigger grid, making it big to cover all our case
     doCmd(cmd)
 
 def writevtt(vttfile,contents):
