@@ -4,7 +4,7 @@ import makesprites
 import shutil
 import os
 
-# Batch process a text file containing list of videos to make sprites for,
+# Batch process a text file containing list of videos (paths or urls) to make sprites for,
 # and a destination directory for just the sprites/vtt files
 #    files get put into DESTINATION/##/*  where ## is the 2 letter prefix of the output files, and * are output files
 

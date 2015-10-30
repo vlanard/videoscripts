@@ -38,7 +38,8 @@ logger = logging.getLogger(sys.argv[0])
 class SpriteTask():
     """small wrapper class as convenience accessor for external scripts"""
     def __init__(self,videofile):
-        if not os.path.exists(videofile):
+        self.remotefile = videofile.startswith("http")
+        if not self.remotefile and not os.path.exists(videofile):
             sys.exit("File does not exist: %s" % videofile)
         basefile = os.path.basename(videofile)
         basefile_nospeed = removespeed(basefile) #strip trailing speed suffix from file/dir names, if present
@@ -273,7 +274,7 @@ def addLogging():
 
 if __name__ == "__main__":
     if not len(sys.argv) > 1 :
-        sys.exit("Please pass the full path to the video file for which to create thumbnails.")
+        sys.exit("Please pass the full path or url to the video file for which to create thumbnails.")
 
     addLogging()
     videofile = sys.argv[1]
