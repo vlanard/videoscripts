@@ -66,10 +66,14 @@ def makeOutDir(videofile):
     base,ext = os.path.splitext(videofile)
     script = sys.argv[0]
     basepath = os.path.dirname(os.path.abspath(script)) #make output dir always relative to this script regardless of shell directory
-    if USE_UNIQUE_OUTDIR:
-        newoutdir = "%s.%s" % (os.path.join(basepath,THUMB_OUTDIR,base),datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    if len(THUMB_OUTDIR)>0 and THUMB_OUTDIR[0]=='/':
+        outputdir = THUMB_OUTDIR
     else:
-        newoutdir = "%s_%s" % (os.path.join(basepath,THUMB_OUTDIR,base),"vtt")
+        outputdir = os.path.join(basepath,THUMB_OUTDIR)
+    if USE_UNIQUE_OUTDIR:
+        newoutdir = "%s.%s" % (os.path.join(outputdir,base),datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    else:
+        newoutdir = "%s_%s" % (os.path.join(outputdir,base),"vtt")
     if not os.path.exists(newoutdir):
         logger.info("Making dir: %s" % newoutdir)
         os.makedirs(newoutdir)
@@ -281,7 +285,8 @@ def addLogging():
 if __name__ == "__main__":
     if not len(sys.argv) > 1 :
         sys.exit("Please pass the full path or url to the video file for which to create thumbnails.")
-
+    if len(sys.argv) == 3:
+        THUMB_OUTDIR = sys.argv[2]
     videofile = sys.argv[1]
     task = SpriteTask(videofile)
     run(task)
